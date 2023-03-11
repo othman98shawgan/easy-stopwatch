@@ -48,19 +48,21 @@ class _HomePageState extends State<HomePage> {
     // Height (without status and toolbar)
     double height3 = height - padding.top - kToolbarHeight;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Easy Stop-Watch'), actions: [
-        IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reset Stop-Watch',
-            onPressed: () {
-              _stopwatch.reset();
-              _stopwatch.stop();
-            }),
-      ]),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return Center(
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return Scaffold(
+          appBar: orientation == Orientation.portrait
+              ? AppBar(title: const Text('Easy Stop-Watch'), actions: [
+                  IconButton(
+                      icon: const Icon(Icons.refresh),
+                      tooltip: 'Reset Stop-Watch',
+                      onPressed: () {
+                        _stopwatch.reset();
+                        _stopwatch.stop();
+                      }),
+                ])
+              : null,
+          body: Center(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onLongPress: () {
@@ -96,9 +98,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
