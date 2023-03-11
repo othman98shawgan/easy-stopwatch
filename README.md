@@ -1,4 +1,4 @@
-# QuickWatch
+# QuickWatch 
 
 QuickWatch is a simple and easy-to-use stopwatch app that allows you to time your workouts, cooking, or any other activities with just a few taps. With its user-friendly design and intuitive interface, QuickWatch is perfect for all your timing needs.
 
@@ -13,6 +13,9 @@ QuickWatch is a simple and easy-to-use stopwatch app that allows you to time you
 ## Installation
 
 Easy Count is available for download on the Google Play Store: [Google Play Store](https://play.google.com/store/apps/details?id=com.othman.quickWatch)
+
+<a href='https://play.google.com/store/apps/details?id=com.othman.quickWatch'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='258.5' height='100'/></a>
+
 
 ## Usage
 
