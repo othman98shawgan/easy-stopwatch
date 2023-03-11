@@ -58,40 +58,46 @@ class _HomePageState extends State<HomePage> {
               _stopwatch.stop();
             }),
       ]),
-      body: Center(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onLongPress: () {
-            _stopwatch.reset();
-            _stopwatch.stop();
-          },
-          onTap: handleStartStop,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: height3 / 3),
-              SizedBox(
-                height: height3 / 3,
-                child: Center(
-                  child: Text(formatTime(_stopwatch.elapsedMilliseconds),
-                      style: const TextStyle(fontSize: 64.0)),
-                ),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return Center(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onLongPress: () {
+                _stopwatch.reset();
+                _stopwatch.stop();
+              },
+              onTap: handleStartStop,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: height3 / 10),
+                  SizedBox(
+                    height: height3 * 4 / 5,
+                    child: Center(
+                      child: Text(formatTime(_stopwatch.elapsedMilliseconds),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: orientation == Orientation.portrait ? 64.0 : 128.0)),
+                    ),
+                  ),
+                  SizedBox(
+                      height: height3 / 10,
+                      child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(_stopwatch.isRunning
+                                  ? 'Tap anywhere to Stop'
+                                  : 'Tap anywhere to Start'),
+                            ],
+                          ))),
+                ],
               ),
-              SizedBox(
-                  height: height3 / 3,
-                  child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(_stopwatch.isRunning
-                              ? 'Tap anywhere to Stop'
-                              : 'Tap anywhere to Start'),
-                        ],
-                      ))),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
