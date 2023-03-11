@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: height3 / 6),
+                  SizedBox(height: height3 / 10),
                   SizedBox(
-                    height: height3 * 4 / 6,
+                    height: height3 * 4 / 5,
                     child: Center(
                       child: Text(formatTime(_stopwatch.elapsedMilliseconds),
                           style: TextStyle(
@@ -82,11 +82,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                      height: height3 / 6,
+                      height: height3 / 10,
                       child: Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(0),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(_stopwatch.isRunning
                                   ? 'Tap anywhere to Stop'
