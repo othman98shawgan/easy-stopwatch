@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Stopwatch _stopwatch;
   late Timer _timer;
+  bool firstPress = true;
 
   @override
   void initState() {
@@ -68,6 +69,13 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(Icons.refresh),
                           tooltip: 'Reset Stop-Watch',
                           onPressed: () {
+                            if (firstPress) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Long press resets the time too!"),
+                                duration: Duration(seconds: 2),                              
+                              ));
+                              firstPress = false;
+                            }
                             reset();
                           }),
                     ])
@@ -84,14 +92,6 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   SizedBox(
                     height: height3 / 10,
-                    child: Center(
-                      child: Text(
-                        'Long Press to reset',
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.robotoMono().fontFamily,
-                        ),
-                      ),
-                    ),
                   ),
                   SizedBox(
                     height: height3 * 4 / 5,
