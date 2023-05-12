@@ -41,9 +41,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  void reset() {
+    _stopwatch.reset();
+    _stopwatch.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     // Height (without SafeArea)
     var padding = MediaQuery.of(context).viewPadding;
@@ -64,8 +68,7 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(Icons.refresh),
                           tooltip: 'Reset Stop-Watch',
                           onPressed: () {
-                            _stopwatch.reset();
-                            _stopwatch.stop();
+                            reset();
                           }),
                     ])
               : null,
@@ -73,14 +76,23 @@ class _HomePageState extends State<HomePage> {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onLongPress: () {
-                _stopwatch.reset();
-                _stopwatch.stop();
+                reset();
               },
               onTap: handleStartStop,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: height3 / 10),
+                  SizedBox(
+                    height: height3 / 10,
+                    child: Center(
+                      child: Text(
+                        'Long Press to reset',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.robotoMono().fontFamily,
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: height3 * 4 / 5,
                     child: Center(
