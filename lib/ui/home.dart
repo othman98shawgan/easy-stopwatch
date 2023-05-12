@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Stopwatch _stopwatch;
   late Timer _timer;
+  bool firstPress = true;
 
   @override
   void initState() {
@@ -41,9 +42,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  void reset() {
+    _stopwatch.reset();
+    _stopwatch.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     // Height (without SafeArea)
     var padding = MediaQuery.of(context).viewPadding;
@@ -64,8 +69,14 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(Icons.refresh),
                           tooltip: 'Reset Stop-Watch',
                           onPressed: () {
-                            _stopwatch.reset();
-                            _stopwatch.stop();
+                            if (firstPress) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Long press resets the time too!"),
+                                duration: Duration(seconds: 2),                              
+                              ));
+                              firstPress = false;
+                            }
+                            reset();
                           }),
                     ])
               : null,
@@ -73,14 +84,15 @@ class _HomePageState extends State<HomePage> {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onLongPress: () {
-                _stopwatch.reset();
-                _stopwatch.stop();
+                reset();
               },
               onTap: handleStartStop,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: height3 / 10),
+                  SizedBox(
+                    height: height3 / 10,
+                  ),
                   SizedBox(
                     height: height3 * 4 / 5,
                     child: Center(
