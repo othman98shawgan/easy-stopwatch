@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wakelock/wakelock.dart';
 
 class HomePage extends StatefulWidget {
@@ -54,15 +55,19 @@ class _HomePageState extends State<HomePage> {
       builder: (context, orientation) {
         return Scaffold(
           appBar: orientation == Orientation.portrait
-              ? AppBar(title: const Text('Easy Stop-Watch'), actions: [
-                  IconButton(
-                      icon: const Icon(Icons.refresh),
-                      tooltip: 'Reset Stop-Watch',
-                      onPressed: () {
-                        _stopwatch.reset();
-                        _stopwatch.stop();
-                      }),
-                ])
+              ? AppBar(
+                  title: Text(
+                    'Easy Stop-Watch',
+                  ),
+                  actions: [
+                      IconButton(
+                          icon: const Icon(Icons.refresh),
+                          tooltip: 'Reset Stop-Watch',
+                          onPressed: () {
+                            _stopwatch.reset();
+                            _stopwatch.stop();
+                          }),
+                    ])
               : null,
           body: Center(
             child: GestureDetector(
@@ -79,10 +84,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: height3 * 4 / 5,
                     child: Center(
-                      child: Text(formatTime(_stopwatch.elapsedMilliseconds),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: orientation == Orientation.portrait ? 64.0 : 128.0)),
+                      child: formatTimeText(_stopwatch.elapsedMilliseconds, orientation),
                     ),
                   ),
                   SizedBox(
@@ -92,9 +94,14 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(_stopwatch.isRunning
-                                  ? 'Tap anywhere to Stop'
-                                  : 'Tap anywhere to Start'),
+                              Text(
+                                _stopwatch.isRunning
+                                    ? 'Tap anywhere to Stop'
+                                    : 'Tap anywhere to Start',
+                                style: TextStyle(
+                                  fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                ),
+                              ),
                             ],
                           ))),
                 ],
@@ -105,16 +112,51 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-}
 
-String formatTime(int milliseconds) {
-  var secs = milliseconds ~/ 1000;
-  var hours = (secs ~/ 3600).toString().padLeft(2, '0');
-  var minutes = ((secs % 3600) ~/ 60).toString().padLeft(2, '0');
-  var seconds = (secs % 60).toString().padLeft(2, '0');
-  var milisecs = ((milliseconds % 1000) ~/ 10).toString().padLeft(2, '0');
-  if (hours == "00") {
-    return "$minutes:$seconds:$milisecs";
+  RichText formatTimeText(int milliseconds, Orientation orientation) {
+    var timeList = formatTime(milliseconds);
+    var timeText = '';
+    for (int i = 0; i < timeList.length - 1; i++) {
+      if (i != 0) {
+        timeText += ':';
+      }
+      timeText += timeList[i];
+    }
+
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: timeText,
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontFamily: 'RobotoCondensed',
+              fontSize: orientation == Orientation.portrait ? 76.0 : 128.0,
+            ),
+          ),
+          TextSpan(
+            text: '.${timeList[timeList.length - 1]}',
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontFamily: 'RobotoCondensed',
+              color: Colors.grey.shade400,
+              fontSize: orientation == Orientation.portrait ? 42.0 : 96.0,
+            ),
+          ),
+        ],
+      ),
+    );
   }
-  return "$hours:$minutes:$seconds:$milisecs";
+
+  List<String> formatTime(int milliseconds) {
+    var secs = milliseconds ~/ 1000;
+    var hours = (secs ~/ 3600).toString().padLeft(2, '0');
+    var minutes = ((secs % 3600) ~/ 60).toString().padLeft(2, '0');
+    var seconds = (secs % 60).toString().padLeft(2, '0');
+    var milisecs = ((milliseconds % 1000) ~/ 10).toString().padLeft(2, '0');
+    if (hours == "00") {
+      return [minutes, seconds, milisecs];
+    }
+    return [hours, minutes, seconds, milisecs];
+  }
 }

@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.12.0
   wakelock: ^0.6.2
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +60,17 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
+  fonts:
+    - family: RobotoCondensed
+      fonts:
+        - asset: fonts/RobotoCondensed-Light.ttf
+          weight: 300
+    - family: Oswald
+      fonts:
+        - asset: fonts/Oswald-ExtraLight.ttf
+          weight: 200
+        - asset: fonts/Oswald-Light.ttf
+          weight: 300
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
