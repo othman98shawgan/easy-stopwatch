@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vibration/vibration.dart';
 import 'package:wakelock/wakelock.dart';
+
+import '../services/store_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,15 +18,44 @@ class _HomePageState extends State<HomePage> {
   late Stopwatch _stopwatch;
   late Timer _timer;
   bool firstPress = true;
+  var vibrationStatus = true;
+  var vibrationOnIcon = Image.asset(
+    "images/vibrate_on_icon.png",
+    width: 24,
+    height: 24,
+  );
+
+  var vibrationOffIcon = Image.asset(
+    "images/vibrate_off_icon.png",
+    width: 24,
+    height: 24,
+  );
 
   @override
   void initState() {
     super.initState();
+    getVibrateStatus();
     Wakelock.enable();
     _stopwatch = Stopwatch();
     _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
       setState(() {});
     });
+  }
+
+  void getVibrateStatus() {
+    StorageManager.readData('VibrationStatus').then((value) {
+      vibrationStatus = value ?? true;
+    });
+  }
+
+  void enableVibration() {
+    vibrationStatus = true;
+    StorageManager.saveData('VibrationStatus', true);
+  }
+
+  void disableVibration() {
+    vibrationStatus = false;
+    StorageManager.saveData('VibrationStatus', false);
   }
 
   @override
@@ -33,6 +65,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleStartStop() {
+    if (vibrationStatus) {
+      Vibration.vibrate(duration: 100);
+    }
     if (_stopwatch.isRunning) {
       _stopwatch.stop();
     } else {
@@ -43,6 +78,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void reset() {
+    if (vibrationStatus) {
+      Vibration.vibrate(duration: 800);
+    }
     _stopwatch.reset();
     _stopwatch.stop();
   }
@@ -66,13 +104,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                   actions: [
                       IconButton(
+                        icon: vibrationStatus ? vibrationOnIcon : vibrationOffIcon,
+                        onPressed: () {
+                          if (vibrationStatus) {
+                            disableVibration();
+                          } else {
+                            enableVibration();
+                          }
+                        },
+                      ),
+                      IconButton(
                           icon: const Icon(Icons.refresh),
                           tooltip: 'Reset Stop-Watch',
                           onPressed: () {
                             if (firstPress) {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text("Long press resets the time too!"),
-                                duration: Duration(seconds: 2),                              
+                                duration: Duration(seconds: 2),
                               ));
                               firstPress = false;
                             }

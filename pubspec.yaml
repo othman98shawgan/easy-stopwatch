@@ -39,6 +39,8 @@ dependencies:
   flutter_launcher_icons: ^0.12.0
   wakelock: ^0.6.2
   google_fonts: ^4.0.4
+  vibration: ^1.7.7
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +73,10 @@ flutter:
           weight: 200
         - asset: fonts/Oswald-Light.ttf
           weight: 300
+
+  assets:  
+    - images/vibrate_on_icon.png
+    - images/vibrate_off_icon.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
